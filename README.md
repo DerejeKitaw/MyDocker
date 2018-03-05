@@ -1,4 +1,6 @@
 # [MyDocker](https://training.play-with-docker.com/)
+[official Doc](https://youtu.be/V9IJj4MzZBc)
+
 Clone github Repo
 ```
 git clone https://github.com/dockersamples/linux_tweet_app
@@ -47,6 +49,56 @@ exit to leave the shell session. This will terminate the bash process, causing t
 As we used the --rm flag when we started the container, Docker removed the container when it stopped. 
 
 This means if you run another docker container ls --all you won’t see the Ubuntu container.
+### Run a background MySQL container
+```
+docker container run \
+ --detach \
+ --name mydb \
+ -e MYSQL_ROOT_PASSWORD=my-secret-pw \
+ mysql:latest
+```
+```
+--detach will run the container in the background.
+--name will name it mydb.
+-e will use an environment variable to specify the root password (NOTE: This should never be done in production).
+```
+```
+docker container ls
+```
+You can check what’s happening in your containers by using a couple of built-in Docker commands: 
+```
+docker container logs and 
+docker container top.
+```
+Example
+```
+# To see logs from the MySQL Docker container.
+docker container logs mydb
+# To see the process running inside the container.
+docker container top mydb
+```
+Although MySQL is running, it is isolated within the container because no network ports have been published to the host. Network traffic cannot reach containers from the host unless ports are explicitly published.
+
+### docker container `exec` allows you to run a command inside a container. 
+```
+docker exec -it mydb \
+ mysql --user=root --password=$MYSQL_ROOT_PASSWORD --version
+
+ # equivalent of mysql --user=root --password=$MYSQL_ROOT_PASSWORD --version inside our MySQL container.
+ ```
+### docker container `exec` to connect to a `new shell process` inside an already-running container. Executing the command below will give you an interactive shell (sh) inside your MySQL container.
+```
+docker exec -it mydb sh
+
+# Notice that your shell prompt has changed. This is because your shell is now connected to the sh process running inside of your container.
+
+mysql --user=root --password=$MYSQL_ROOT_PASSWORD --version
+will return the same output is the same as before.
+
+Type `exit` to leave the interactive shell session.
+```
+
+
 
 ```
 # Docker version
