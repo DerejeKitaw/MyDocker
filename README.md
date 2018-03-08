@@ -70,7 +70,7 @@ You can check what’s happening in your containers by using a couple of built-i
 docker container logs and 
 docker container top.
 ```
-Example
+### Example
 ```
 # To see logs from the MySQL Docker container.
 docker container logs mydb
