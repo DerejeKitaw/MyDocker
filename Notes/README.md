@@ -70,5 +70,14 @@ As long as the MySQL process is running, Docker will keep the container running 
 ## check what’s happening in your containers
 ```
 docker container logs mydb
-docker container top
+docker container top mydb
+```
+## run a command inside a container
+```
+docker exec -it mydb \
+mysql --user=root --password=$MYSQL_ROOT_PASSWORD --version
+```
+## connect to a new shell process inside an already-running container
+```
+docker exec -it mydb sh
 ```
