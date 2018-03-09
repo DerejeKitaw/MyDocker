@@ -32,15 +32,15 @@ docker container run --interactive --tty --rm ubuntu bash
 * Run the following commands in the container.
 
 ```
-> ls /
+ls /
 # will list the contents of the root director in the container.
 ```
 ```
-> ps aux
+ps aux
 # will show running processes in the container.
 ```
 ```
->cat /etc/issue
+cat /etc/issue
 # will show which Linux distro the container is running, in this case Ubuntu 16.04.3 LTS.
 ```
 ```
@@ -50,3 +50,25 @@ docker container run --interactive --tty --rm ubuntu bash
 >Interactive containers are useful when you are putting together your own image. You can run a container and verify all the steps you need to deploy your app, and capture them in a Dockerfile.
 
 > You can commit a container to make an image from it - but you should avoid that wherever possible. It’s much better to use a repeatable Dockerfile to build your image. 
+
+## Run a background MySQL container
+> Background containers are how you’ll run most applications.
+```
+ docker container run \
+ --detach \
+ --name mydb \
+ -e MYSQL_ROOT_PASSWORD=my-secret-pw \
+ mysql:latest
+ ```
+> * `--detach` will run the container in the background.
+> * `--name` will name it mydb.
+> * `-e` will use an environment variable to specify the root password (NOTE: This should never be done in production).
+```
+If MySQL image was not available locally, Docker automatically pulled it from Docker Hub.
+As long as the MySQL process is running, Docker will keep the container running in the background.
+```
+## check what’s happening in your containers
+```
+docker container logs mydb
+docker container top
+```
